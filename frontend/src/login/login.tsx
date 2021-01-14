@@ -1,5 +1,7 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { login } from './login-store'
 import { Formik, Field, Form } from 'formik'
 import * as yup from 'yup'
 
@@ -14,8 +16,14 @@ const loginSchema = yup.object().shape({
 })
 
 const Login = () => {
-  const handleSubmit = ({ email, password }: Values) => {
-    alert(JSON.stringify({ email, password }))
+  const dispatch = useDispatch()
+
+  const handleSubmit = async ({ email, password }: Values) => {
+    try {
+      dispatch(login({ email, password }))
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
