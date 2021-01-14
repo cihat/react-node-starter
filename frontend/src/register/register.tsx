@@ -1,5 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import { register } from './register-store'
 import { Formik, Field, Form } from 'formik'
 import * as yup from 'yup'
 
@@ -20,8 +22,16 @@ const registerSchema = yup.object().shape({
 })
 
 const Register = () => {
-  const handleSubmit = ({ name, email, password }: Values) => {
-    alert(JSON.stringify({ name, email, password }))
+  const dispatch = useDispatch()
+
+  let history = useHistory()
+
+  const handleSubmit = async ({ name, email, password }: Values) => {
+    try {
+      dispatch(register({ name, email, password }, history))
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
