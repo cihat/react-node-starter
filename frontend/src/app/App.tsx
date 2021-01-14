@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { fetchSession } from '../login/login-store'
 import Routes from './routes'
 
-function App() {
+const App: React.FC = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchSession())
+  }, [dispatch])
+
   return (
     <>
       <Routes />
