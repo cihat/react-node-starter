@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { login } from './login-store'
 import { Formik, Field, Form } from 'formik'
 import * as yup from 'yup'
@@ -15,8 +15,14 @@ const loginSchema = yup.object().shape({
   password: yup.string().required('Password is required'),
 })
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search)
+}
+
 const Login = () => {
   const dispatch = useDispatch()
+
+  let query = useQuery()
 
   const handleSubmit = async ({ email, password }: Values) => {
     try {
@@ -30,6 +36,20 @@ const Login = () => {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-8">
+          {query.get('registerSucces') === '1' && (
+            <div className="alert alert-success alert-dismissible fade show" role="alert">
+              <h4 className="alert-heading">You are now registered!</h4>
+              <p>Use your credentials to log in below.</p>
+              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          )}
+          {query.get('logoutSuccess') === '1' && (
+            <div className="alert alert-success alert-dismissible fade show" role="alert">
+              <h4 className="alert-heading">You are successfully logged out!</h4>
+              <p>Use your credentials to log in below.</p>
+              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          )}
           <Formik
             initialValues={{
               email: '',
